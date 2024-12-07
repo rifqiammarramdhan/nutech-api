@@ -1,4 +1,5 @@
 const { addUser, getOneUserByEmail, updateOneUserByEmail, updateImg } = require("../../models/Users");
+const { addUserAccount } = require("../../models/Transaction");
 const { userSchema, loginSchema } = require("../middlewares/validation/validationUser");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -33,7 +34,8 @@ exports.registration = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
 
-    await addUser(email, hashPassword, first_name, last_name);
+    const user = await addUser(email, hashPassword, first_name, last_name);
+    await addUserAccount(user[0].user_id);
 
     res.status(200).json({
       status: 0,

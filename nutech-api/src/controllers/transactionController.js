@@ -7,7 +7,7 @@ exports.getBalance = async (req, res) => {
     const emailDecode = req.email;
 
     const result = await getUserBalance(emailDecode);
-
+    console.log({ result });
     if (result.length < 1) throw new Error("Get Balance Gagal");
 
     res.status(200).json({

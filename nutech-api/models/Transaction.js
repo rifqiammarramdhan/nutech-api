@@ -1,5 +1,20 @@
 const db = require("../config/db");
 
+exports.addUserAccount = async (userId, email) => {
+  try {
+    const query = {
+      name: "create-user",
+      text: "INSERT INTO transactions.user_accounts (user_id) VALUES ($1)",
+      values: [...data],
+    };
+
+    const { rows } = await db.query(query);
+    return rows;
+  } catch (error) {
+    return error;
+  }
+};
+
 exports.getUserBalance = async (email) => {
   try {
     const query = {
