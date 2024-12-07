@@ -36,6 +36,9 @@ exports.registration = async (req, res) => {
 
     await addUser(email, hashPassword, first_name, last_name);
 
+    const user = await getOneUserByEmail(email);
+    await addUserAccount(user.user_id);
+
     res.status(200).json({
       status: 0,
       message: "Registrasi berhasil, silakan login",
