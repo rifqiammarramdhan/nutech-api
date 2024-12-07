@@ -22,7 +22,6 @@ exports.registration = async (req, res) => {
 
   try {
     const existingUser = await getOneUserByEmail(email);
-    console.log({ existingUser });
     if (existingUser.length > 0) {
       return res.status(400).json({
         status: 102,
