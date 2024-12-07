@@ -37,7 +37,14 @@ exports.registration = async (req, res) => {
     await addUser(email, hashPassword, first_name, last_name);
 
     const user = await getOneUserByEmail(email);
-    await addUserAccount(user.user_id);
+    if (!user[0].length < 1) {
+      return res.status(400).json({
+        status: 103,
+        message: "User ID tidak ditemukan",
+        data: null,
+      });
+    }
+    await addUserAccount(user[0].user_id);
 
     res.status(200).json({
       status: 0,

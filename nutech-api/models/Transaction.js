@@ -1,11 +1,11 @@
 const db = require("../config/db");
 
-exports.addUserAccount = async (userId, email) => {
+exports.addUserAccount = async (userId) => {
   try {
     const query = {
-      name: "create-user",
+      name: "create-user-Account",
       text: "INSERT INTO transactions.user_accounts (user_id) VALUES ($1)",
-      values: [...data],
+      values: [userId],
     };
 
     const { rows } = await db.query(query);
