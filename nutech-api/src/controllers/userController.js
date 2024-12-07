@@ -34,9 +34,7 @@ exports.registration = async (req, res) => {
     const salt = await bcrypt.genSalt();
     const hashPassword = await bcrypt.hash(password, salt);
 
-    const user = await addUser(email, hashPassword, first_name, last_name);
-    const userId = user[0].user_id;
-    await addUserAccount(userId);
+    await addUser(email, hashPassword, first_name, last_name);
 
     res.status(200).json({
       status: 0,

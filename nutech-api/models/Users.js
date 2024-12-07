@@ -1,17 +1,35 @@
 const db = require("../config/db");
 
 exports.addUser = async (...data) => {
+  const client = await db.connect();
   try {
-    const query = {
+    await client.query("BEGIN");
+
+    const queryUser = {
       name: "create-user",
       text: "INSERT INTO users.users (email, password, first_name, last_name) VALUES ($1, $2, $3, $4) RETURNING *",
       values: [...data],
     };
 
-    const { rows } = await db.query(query);
-    return rows;
+    const { rows: userRows } = await client.query(queryUser);
+
+    const userId = userRows[0].id;
+
+    const queryAccount = {
+      text: "INSERT INTO transactions.user_accounts (user_id) VALUES ($1)",
+      values: [userId],
+    };
+
+    await client.query(queryAccount);
+
+    await client.query("COMMIT");
+
+    return userRows;
   } catch (error) {
-    return error;
+    await client.query("ROLLBACK");
+    throw error;
+  } finally {
+    client.release();
   }
 };
 
